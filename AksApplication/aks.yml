@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: AksApplication-master
+  name: AksApplication-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: AksApplication-master
+      app: AksApplication
   template:
     metadata:
       labels:
-        app: AksApplication-master
+        app: AksApplication
     spec:
       containers:
-      - name: AksApplication-master
-        image: acrsample12.azurecr.io/reddivaripriyanka/AksApplication:#{Build.BuildId}#
+      - name: AksApplication
+        image: acrsample12.azurecr.io/reddivaripriyanka/sampleappforaks:#{Build.BuildId}#
         ports:
         - containerPort: 80
         env:
@@ -28,10 +28,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: AksApplication-master
+  name: AksApplication
 spec:
   type: LoadBalancer
   ports:
   - port: 80
   selector:
-    app: AksApplication-master
+    app: AksApplication
