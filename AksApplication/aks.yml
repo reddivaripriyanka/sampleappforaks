@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: AksApplication-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: AksApplication-master
+  template:
+    metadata:
+      labels:
+        app: AksApplication-master
+    spec:
+      containers:
+      - name: AksApplication-master
+        image: acrsample12.azurecr.io/reddivaripriyanka/AksApplication:#{Build.BuildId}#
+        ports:
+        - containerPort: 80
+        env:
+          - name: PODNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+      imagePullSecrets:
+      - name: priyankaaks
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: AksApplication-master
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: AksApplication-master
